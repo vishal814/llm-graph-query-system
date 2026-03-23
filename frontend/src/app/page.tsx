@@ -11,6 +11,8 @@ import { CustomDotNode } from '@/components/graph/CustomDotNode';
 import { TopNav } from '@/components/layout/TopNav';
 import { ChatPanel } from '@/components/chat/ChatPanel';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
 export default function App() {
     return <ReactFlowProvider><Home /></ReactFlowProvider>;
 }
@@ -60,7 +62,7 @@ function Home() {
         searchTimeoutRef.current = setTimeout(async () => {
             setSearchLoading(true);
             try {
-                const res = await fetch(`http://localhost:4000/api/search?q=${encodeURIComponent(searchQuery)}`);
+                const res = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(searchQuery)}`);
                 const data = await res.json();
                 setSearchResults(data.results || []);
             } catch { setSearchResults([]); }
@@ -142,7 +144,7 @@ function Home() {
 
     const expandNode = async (nodeId: string) => {
         try {
-            const res = await fetch('http://localhost:4000/api/expand', {
+            const res = await fetch(`${API_URL}/api/expand`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nodeId })
             });
             const data = await res.json();
@@ -186,7 +188,7 @@ function Home() {
         const history = messages.slice(1).map(m => ({ role: m.role, content: m.content }));
 
         try {
-            const resp = await fetch('http://localhost:4000/api/chat/stream', {
+            const resp = await fetch(`${API_URL}/api/chat/stream`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: userMsg, history })
             });
@@ -220,7 +222,7 @@ function Home() {
         } catch (streamErr: any) {
             console.warn('Stream failed, using fallback:', streamErr.message);
             try {
-                const res = await fetch('http://localhost:4000/api/chat', {
+                const res = await fetch(`${API_URL}/api/chat`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: userMsg, history })
                 });
@@ -230,7 +232,7 @@ function Home() {
                 if (data.graphData) parseGraphData(data.graphData);
                 if (data.highlightIds) setHighlightIds(new Set(data.highlightIds));
             } catch (e: any) {
-                setMessages(prev => [...prev, { role: 'assistant', content: "Error: Could not reach backend on port 4000." }]);
+                setMessages(prev => [...prev, { role: 'assistant', content: "Error: Could not reach backend server." }]);
             }
         } finally {
             setLoading(false);
