@@ -69,8 +69,8 @@ export const ChatPanel = ({
                 <div ref={chatEndRef as React.RefObject<HTMLDivElement>} />
             </div>
 
-            {messages.length <= 1 && !loading && (
-                <div className="px-4 pb-2 space-y-1.5 shrink-0">
+            {!loading && (
+                <div className="px-4 pb-2 flex gap-2 overflow-x-auto shrink-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {[
                         "Which products have the most billing documents?",
                         "Trace the full flow of sales order 740556",
@@ -79,9 +79,9 @@ export const ChatPanel = ({
                         "Show me the entire supply chain graph",
                         "What is the total net amount of all sales orders?",
                         "How many unique customers do we have?",
-                    ].map((q, i) => (
+                    ].filter(q => !messages.some(m => m.content === q)).map((q, i) => (
                         <button key={i} onClick={() => setInput(q)}
-                            className="block w-full text-left text-xs text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg font-medium transition">
+                            className="shrink-0 text-[11px] text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap shadow-sm">
                             {q}
                         </button>
                     ))}
