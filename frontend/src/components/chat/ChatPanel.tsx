@@ -73,8 +73,9 @@ export const ChatPanel = ({
                 <div className="px-4 pb-2 space-y-1.5 shrink-0">
                     {[
                         "Which products have the most billing documents?",
-                        "Trace the full flow of billing document 91150175",
-                        "Find sales orders delivered but not billed",
+                        "Trace the full flow of sales order 740556",
+                        "Give me all delivery documents for sales order 740556",
+                        "Give me all billing documents for sales order 740556",
                         "Show me the entire supply chain graph",
                         "What is the total net amount of all sales orders?",
                         "How many unique customers do we have?",
