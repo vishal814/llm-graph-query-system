@@ -70,7 +70,7 @@ export const ChatPanel = ({
             </div>
 
             {!loading && (
-                <div className="px-4 pb-2 flex gap-2 overflow-x-auto shrink-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <div className="px-4 pb-2 space-y-1.5 shrink-0">
                     {[
                         "Which products have the most billing documents?",
                         "Trace the full flow of sales order 740556",
@@ -81,7 +81,7 @@ export const ChatPanel = ({
                         "How many unique customers do we have?",
                     ].filter(q => !messages.some(m => m.content === q)).map((q, i) => (
                         <button key={i} onClick={() => setInput(q)}
-                            className="shrink-0 text-[11px] text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap shadow-sm">
+                            className="block w-full text-left text-xs text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg font-medium transition">
                             {q}
                         </button>
                     ))}
