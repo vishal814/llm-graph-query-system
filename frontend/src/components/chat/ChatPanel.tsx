@@ -78,7 +78,7 @@ export const ChatPanel = ({
                         "Give me all billing documents for sales order 740556",
                         "Show me the entire supply chain graph",
                         "What is the total net amount of all sales orders?",
-                        "How many unique customers do we have?",
+                        "Which customers have the most sales orders?",
                     ].filter(q => !messages.some(m => m.content === q)).map((q, i) => (
                         <button key={i} onClick={() => setInput(q)}
                             className="block w-full text-left text-xs text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg font-medium transition">
