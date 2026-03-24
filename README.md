@@ -93,6 +93,33 @@ The O2C domain requires traversing 6+ relationship hops in a single query (e.g. 
 
 ---
 
+## System Architecture Diagram
+
+```mermaid
+graph TD
+    Client[Browser / React Flow] -->|REST & SSE| API[Express API on Render]
+    API -->|Prompt & History| LLM[Groq Llama 3 API]
+    API -->|Generated Cypher| DB[(Neo4j AuraDB)]
+    DB -->|Graph Nodes/Edges| API
+    LLM -->|Streamed NL Answer| API
+    API -.->|JSON/Stream| Client
+
+    style Client fill:#3b82f6,stroke:#1d4ed8,color:#fff
+    style API fill:#10b981,stroke:#047857,color:#fff
+    style LLM fill:#f59e0b,stroke:#b45309,color:#fff
+    style DB fill:#8b5cf6,stroke:#6d28d9,color:#fff
+```
+
+---
+
+## Dataset Initialization & ETL Pipeline
+
+The platform relies on highly complex logistics `.json` data mimicking enterprise Order-to-Cash databases. The raw datasets representing the original relational tables/documents are located in `datasets/`. 
+
+To load the nodes and relationships into the live graph database, we engineered an autonomous ETL (Extract, Transform, Load) script: `backend/src/scripts/ingest.ts`. Running this script loops identically through every dataset file, formats the JSON logic into Neo4j nodes mapping directly to the 13 defined entities, and pushes the relationships perfectly to AuraDB.
+
+---
+
 ## Local Setup
 
 ### Prerequisites
@@ -125,5 +152,23 @@ Show me the entire supply chain graph
 Show billing documents for delivery 80738076
 How many unique customers do we have?
 Which customers have the most sales orders?
-
 ```
+
+---
+
+## ☁️ Cloud Deployment (Vercel & Render)
+
+This project features a completely free CI/CD decoupled architecture format.
+
+### Backend (Render Free Tier)
+1. Link your GitHub repository to a new Render **Web Service**.
+2. **Root Directory:** `backend`
+3. **Build Command:** `npm install`
+4. **Start Command:** `npm start`
+5. Inject the `.env` variables from your local setup into the Render Environment dashboard.
+
+### Frontend (Vercel Hobby Tier)
+1. Import the same GitHub repository to a new Vercel Project.
+2. **Root Directory:** `frontend`
+3. **Environment Variables:** Add a `NEXT_PUBLIC_API_URL` key, pointing to your brand new live Render Backend URL *(e.g. `https://my-backend.onrender.com`)* making sure there is no trailing slash.
+4. Click Deploy!
