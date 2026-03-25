@@ -111,4 +111,45 @@ Cypher: MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 100
 
         return { answer, cypher: cypherQuery, graphData: neo4jData };
     }
+
+    public async searchNodes(query: string): Promise<any[]> {
+        const session = driver.session();
+        try {
+            const result = await session.run(`
+                MATCH (n)
+                WHERE toLower(toString(n.id)) CONTAINS toLower($q)
+                   OR toLower(toString(n.name)) CONTAINS toLower($q)
+                   OR toLower(toString(n.status)) CONTAINS toLower($q)
+                RETURN n
+                LIMIT 15
+            `, { q: query.trim() });
+            
+            return result.records.map(r => {
+                const node = r.get('n');
+                return {
+                    elementId: node.elementId,
+                    label: node.labels[0],
+                    properties: node.properties,
+                    display: node.properties.id || node.properties.name || node.labels[0]
+                };
+            });
+        } finally {
+            await session.close();
+        }
+    }
+
+    public async expandNode(nodeId: string): Promise<any[]> {
+        const session = driver.session();
+        try {
+            const result = await session.run(`
+                MATCH (n)-[r]-(m) 
+                WHERE elementId(n) = $id
+                RETURN n, r, m
+                LIMIT 50
+            `, { id: nodeId });
+            return result.records.map(r => r.toObject());
+        } finally {
+            await session.close();
+        }
+    }
 }
