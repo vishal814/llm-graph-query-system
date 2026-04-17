@@ -2,7 +2,7 @@
 
 A Natural Language interface for querying an **Order-to-Cash (O2C)** supply chain Knowledge Graph. Ask questions in plain English, get answers backed by live Neo4j data, and explore relationships visually.
 
-**🎥 [Watch the 60-Second Demo & Full Walkthrough Here!](https://www.vidline.com/share/V0DDH8OV55/8f23e6159f88976d8a2d897d5f652cf1)**
+**🎥 [Watch the 60-Second Demo & Full Walkthrough Here!](https://www.vidline.com/video/V09NH8B8LR)**
 
 ---
 
