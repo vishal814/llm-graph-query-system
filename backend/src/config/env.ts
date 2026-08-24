@@ -7,3 +7,4 @@ export const NEO4J_URI = process.env.NEO4J_URI || '';
 export const NEO4J_USERNAME = process.env.NEO4J_USERNAME || '';
 export const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD || '';
 export const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
+export const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';

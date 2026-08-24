@@ -90,20 +90,24 @@ Cypher: MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 100
         console.log("Generated Cypher:", cypherQuery);
 
         // Step 3: Execute Cypher
-        const session = driver.session();
         let dbResultStr = "";
         let neo4jData: any[] = [];
-        try {
-            const result = await session.run(cypherQuery);
-            neo4jData = result.records.map(r => r.toObject());
-            dbResultStr = JSON.stringify(neo4jData, null, 2);
-            // truncate DB result if too huge to feed to LLM
-            if (dbResultStr.length > 3000) dbResultStr = dbResultStr.substring(0, 3000) + "...[TRUNCATED]";
-        } catch (dbErr) {
-            console.error("Cypher execution error:", dbErr);
-            dbResultStr = "Error executing query against database.";
-        } finally {
-            await session.close();
+        if (!driver) {
+            dbResultStr = "Neo4j database is not connected. Please verify NEO4J_URI in backend/.env.";
+        } else {
+            const session = driver.session();
+            try {
+                const result = await session.run(cypherQuery);
+                neo4jData = result.records.map(r => r.toObject());
+                dbResultStr = JSON.stringify(neo4jData, null, 2);
+                // truncate DB result if too huge to feed to LLM
+                if (dbResultStr.length > 3000) dbResultStr = dbResultStr.substring(0, 3000) + "...[TRUNCATED]";
+            } catch (dbErr) {
+                console.error("Cypher execution error:", dbErr);
+                dbResultStr = "Error executing query against database.";
+            } finally {
+                await session.close();
+            }
         }
 
         // Step 4: Final NL Generation
@@ -113,6 +117,7 @@ Cypher: MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 100
     }
 
     public async searchNodes(query: string): Promise<any[]> {
+        if (!driver) return [];
         const session = driver.session();
         try {
             const result = await session.run(`
@@ -139,6 +144,7 @@ Cypher: MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 100
     }
 
     public async expandNode(nodeId: string): Promise<any[]> {
+        if (!driver) return [];
         const session = driver.session();
         try {
             const result = await session.run(`
