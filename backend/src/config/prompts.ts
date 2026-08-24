@@ -4,16 +4,19 @@ Nodes:
 - SalesOrder [id, creationDate, totalNetAmount, currency]
 - SalesOrderItem [id, requestedQuantity, netAmount]
 - Material [id]
+- Product [id]
 - DeliveryDocument [id, creationDate, shippingPoint, status]
 - DeliveryItem [id, actualDeliveryQuantity]
 - BillingDocument [id, creationDate, totalNetAmount, currency]
 - BillingItem [id, billingQuantity, netAmount]
 - JournalEntry [id, amount, currency, postingDate]
+- Payment [id, amount, currency, paymentDate]
 
 Relationships:
 - (SalesOrder)-[:SOLD_TO]->(Customer)
 - (SalesOrder)-[:HAS_ITEM]->(SalesOrderItem)
 - (SalesOrderItem)-[:IS_MATERIAL]->(Material)
+- (SalesOrderItem)-[:IS_PRODUCT]->(Product)
 - (DeliveryDocument)-[:HAS_ITEM]->(DeliveryItem)
 - (DeliveryItem)-[:DELIVERS_ITEM]->(SalesOrderItem)
 - (BillingDocument)-[:HAS_ITEM]->(BillingItem)
