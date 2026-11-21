@@ -329,6 +329,7 @@ function Home() {
                         onNodeDoubleClick={(_, node) => expandNode(node.id)}
                         onPaneClick={() => setSelectedNode(null)}
                         proOptions={{ hideAttribution: true }}
+                        forceColorMode="light"
                         style={{ background: '#f5f7fa' }}
                     >
                         <Background color="#e0e4ea" gap={24} size={1} />
