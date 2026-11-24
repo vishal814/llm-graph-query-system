@@ -99,7 +99,7 @@ function Home() {
         }));
         setAllNodes(laidOut);
         setAllEdges(newEdges);
-        setTimeout(() => fitView({ padding: 0.15, duration: 800 }), 100);
+        setTimeout(() => fitView({ padding: '6.52%', duration: 800 }), 100);
     }, [fitView]);
 
     const parseGraphData = useCallback((neo4jData: any[], merge = false) => {
@@ -172,7 +172,7 @@ function Home() {
             setAllNodes(simNodes.map((n: any) => ({
                 ...allNodes.find(orig => orig.id === n.id)!, position: { x: n.x, y: n.y }
             })));
-            setTimeout(() => fitView({ padding: 0.15, duration: 800 }), 100);
+            setTimeout(() => fitView({ padding: '6.52%', duration: 800 }), 100);
         }
     };
 
